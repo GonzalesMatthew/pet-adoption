@@ -212,3 +212,97 @@ const pets = [
       imageUrl: "http://lsae2.iypcdn.com/static//modules/uploads/photos/language1/dino-live-22.jpg?119"
     }
   ];
+
+  // TO MONITOR YOUR FILTER FEATURE
+  let filtered = false;
+
+  // PRINT TO DOM FUNCTION
+  const printToDom = (divId, textToPrint) => {
+    const selectedDiv = document.querySelector(divId);
+    selectedDiv.innerHTML = textToPrint;
+  };
+
+  // PRINT ARRAY TO DOM FUNCTION
+
+  const petCards = (arrayOfObjects) => {
+    let domString = "";
+
+    arrayOfObjects.forEach((object, i) => {
+      domString += `<div class="card text-center" style="width: 15rem;">
+                      <div class="card-header">${object.name}</div>
+                      <div class="card-image my-2">
+                        <img src=${object.imageUrl} alt="cat" class="card-image img-thumbnail w-75">
+                      </div>
+                      <div class="card-body p-0">
+                          <p class="fs-5 m-0">${object.color}</p>
+                          <p class="card-text fs-6">${object.specialSkill}</p>
+                          <p class="card-text fs-6">${object.type}</p>
+
+                          <button type="button" class="btn btn-danger" id="${i}">Delete</button>
+
+                       </div>
+                    </div>`
+                      ;
+    })
+    console.log(domString);
+    printToDom("#pets", domString);
+  }
+
+  // DETERMINE WHAT THE BOOTSTRAP BUTTON FILTERS DO
+  const handleButtonFilters = (e) => {
+    const buttonId = e.target.id;
+
+    // UPDATE THE PETS BASED ON BUTTON CLICKED
+    const selectedPets = [];
+    for (let i = 0; i < pets.length; i++) {
+      if (pets[i].type === buttonId) {
+        selectedPets.push(pets[i]);
+      }
+    }
+  
+    if (buttonId === "All") {
+      //PRINT ALL THE PETS
+      filtered = false;
+      petCards(pets);
+    } else {
+      filtered = true;
+      petCards(selectedPets);
+    }
+  
+    console.log(filtered);
+  };
+
+
+  // D in CRUD: Delete Pet Card
+  const deletePet = (e) => {
+    const targetType = e.target.type;
+    const targetId = e.target.id;
+
+    if (targetType === "button") {
+      pets.splice(targetId,1);
+    }
+
+    petCards(pets);
+  };
+
+
+
+
+  // BUTTON LOGIC
+  const buttonEvents = () => {
+    document.querySelector("#All").addEventListener("click", handleButtonFilters);
+    document.querySelector("#cat").addEventListener("click", handleButtonFilters);
+    document.querySelector("#dog").addEventListener("click", handleButtonFilters);
+    document.querySelector("#dino").addEventListener("click", handleButtonFilters);
+
+    // Targeting the Delete Button
+    document.querySelector("#pets").addEventListener("click", deletePet);
+  };
+
+  // INIT
+  const init = () => {
+    buttonEvents();
+    petCards(pets);
+  };
+
+  init();
