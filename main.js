@@ -1,5 +1,4 @@
-console.log("CONNECTED");
-
+// Start array
 const pets = [
     {
       name: "Dusty",
@@ -212,33 +211,31 @@ const pets = [
       imageUrl: "http://lsae2.iypcdn.com/static//modules/uploads/photos/language1/dino-live-22.jpg?119"
     }
   ];
+  // End array
 
-  // TO MONITOR YOUR FILTER FEATURE
-  let filtered = false;
-
-  // PRINT TO DOM FUNCTION
+  // Start Print to DOM
+  // Build Print to DOM function
   const printToDom = (divId, textToPrint) => {
     const selectedDiv = document.querySelector(divId);
     selectedDiv.innerHTML = textToPrint;
   };
 
-  // PRINT ARRAY TO DOM FUNCTION
-
+  // Print array to DOM
   const petCards = (arrayOfObjects) => {
     let domString = "";
 
     arrayOfObjects.forEach((object, i) => {
-      domString += `<div class="card text-center" style="width: 15rem;">
+      domString += `<div class="mt-3 card text-center" style="width: 15rem;">
                       <div class="card-header">${object.name}</div>
                       <div class="card-image my-2">
-                        <img src=${object.imageUrl} alt="cat" class="card-image img-thumbnail w-75">
+                        <img src=${object.imageUrl} alt=${object.type} class="card-image img-thumbnail w-75">
                       </div>
                       <div class="card-body p-0">
                           <p class="fs-5 m-0">${object.color}</p>
                           <p class="card-text fs-6">${object.specialSkill}</p>
                           <p class="card-text fs-6">${object.type}</p>
 
-                          <button type="button" class="btn btn-danger" id="${i}">Delete</button>
+                         <!-- <button type="button" class="btn btn-danger ${object.type}" id="${i}">Delete</button> -->
 
                        </div>
                     </div>`
@@ -247,12 +244,15 @@ const pets = [
     console.log(domString);
     printToDom("#pets", domString);
   }
+  // End Print to DOM
 
-  // DETERMINE WHAT THE BOOTSTRAP BUTTON FILTERS DO
+  // Start Anonymous Functions
+  // Logic to control the Bootstrap buttons
+  // Button Filters Logic:
   const handleButtonFilters = (e) => {
     const buttonId = e.target.id;
 
-    // UPDATE THE PETS BASED ON BUTTON CLICKED
+    // Top Buttons Filter Pets Based on Type
     const selectedPets = [];
     for (let i = 0; i < pets.length; i++) {
       if (pets[i].type === buttonId) {
@@ -261,48 +261,50 @@ const pets = [
     }
   
     if (buttonId === "All") {
-      //PRINT ALL THE PETS
-      filtered = false;
+      // Show All Pets
       petCards(pets);
     } else {
-      filtered = true;
+      // Show filtered pets
       petCards(selectedPets);
     }
   
-    console.log(filtered);
   };
 
-
+// Delete pet card logic
   // D in CRUD: Delete Pet Card
-  const deletePet = (e) => {
-    const targetType = e.target.type;
-    const targetId = e.target.id;
+//   const deletePet = (e) => {
+//     const targetType = e.target.type;
+//     const targetId = e.target.id;
 
-    if (targetType === "button") {
-      pets.splice(targetId,1);
-    }
+//     if (targetType === "button") {
+//       pets.splice(targetId,1);
+//       petCards(pets);
+//     }
+// console.log(e);
+    
+//   };
+  // End Anonymous functions
 
-    petCards(pets);
-  };
 
 
-
-
-  // BUTTON LOGIC
+// Start Event Recording 
+  // Record button click events
   const buttonEvents = () => {
     document.querySelector("#All").addEventListener("click", handleButtonFilters);
     document.querySelector("#cat").addEventListener("click", handleButtonFilters);
     document.querySelector("#dog").addEventListener("click", handleButtonFilters);
     document.querySelector("#dino").addEventListener("click", handleButtonFilters);
 
-    // Targeting the Delete Button
-    document.querySelector("#pets").addEventListener("click", deletePet);
+    // // Targeting the Delete Button
+    // document.querySelector("#pets").addEventListener("click", deletePet);
   };
+  // End Event Recording
 
-  // INIT
+// Start init()
   const init = () => {
     buttonEvents();
     petCards(pets);
   };
 
   init();
+// End init()
